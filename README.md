@@ -2,15 +2,12 @@
 
 Clone, build and run instructions: 
 
-1. Clone repository from https://github.com/rdelacruz1/coupon-service-api.git. 
+1. Set GRADLE_HOME to cloned project location .home folder to avoid other system defaults. 
 
-2. Set GRADLE_HOME to cloned project location .home folder to avoid other system defaults. 
+2. In order to run the server, type ./gradlew bootRun command from the project directory on the mac terminal. It may get stuck at 75%, ignore it, the api is running. 
 
-3. In order to run the server, type ./gradlew bootRun command from the project directory on the mac terminal. It may get stuck at 75%, just ignore, the api is running. 
+3. The API will automatically execute a startup-data.sql file at startup that will initialize the database. 
 
-4. The API will automatically execute a startup-data.sql file at startup that will initialize the database. 
-
- 
 
 Cassandra Data modeling: 
 
