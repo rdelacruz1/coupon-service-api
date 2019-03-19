@@ -1,0 +1,6 @@
+cassandra:
+  storagedir: .storage
+  storage_port: 17110
+  listen_address: 127.0.0.1
+  native_transport_port: 19142
+  keyspace: coupon_service

@@ -1,0 +1,1 @@
+DROP KEYSPACE coupon_service;
