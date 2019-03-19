@@ -6,11 +6,9 @@ Clone, build and run instructions:
 
 2. Set GRADLE_HOME to cloned project location .home folder to avoid other system defaults. 
 
-3. In order to build the project, run ./gradlew build command from the project directory on the mac terminal. This will create a .jar file at /build/libs. 
+3. In order to run the server, type ./gradlew bootRun command from the project directory on the mac terminal. It may get stuck at 75%, just ignore, the api is running. 
 
-4. In order to run the API, change directory to /build/libs and run the .jar file using java –jar jarfilename.jar command. 
-
-5. The API will automatically execute a startup-data.sql file at startup that will initialize the database. 
+4. The API will automatically execute a startup-data.sql file at startup that will initialize the database. 
 
  
 
