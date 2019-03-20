@@ -42,7 +42,11 @@ Endpoint path:  demo/addBusiness.
 
 Parameters: id UUID, String name 
 
-Request example from terminal: curl --header "Content-Type: application/json"   --request POST   --data '{"id":"3c79e27e-6c3c-4e6c-b8ba-401e6a5ee39b","name":"tesla"}'   http://localhost:8080/demo/addBusiness 
+Request example from terminal: 
+
+```sh
+curl --header "Content-Type: application/json"   --request POST   --data '{"id":"3c79e27e-6c3c-4e6c-b8ba-401e6a5ee39b","name":"tesla"}'   http://localhost:8080/demo/addBusiness 
+```
 
  
 
