@@ -4,9 +4,11 @@ Clone, build and run instructions:
 
 1. Set `GRADLE_HOME` to cloned project location `.home` folder to avoid other system defaults. 
 
-2. In order to run the server, type ./gradlew bootRun command from the project directory on the mac terminal. It may get stuck at 75%, ignore it, the api is running. 
+2. In order to run the server, type `./gradlew bootRun` command from the project directory on the mac terminal. If the progress bar stops at 75%, ignore it. The api is running. 
 
-3. The API will automatically execute a `startup-data.sql` file at startup that will initialize the database. 
+3. In order to test run `./gradlew test`.
+
+4. The API will automatically execute a `startup-data.sql` file at startup that will initialize the database. 
 
 
 Cassandra Data modeling: 
