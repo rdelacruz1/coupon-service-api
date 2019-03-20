@@ -1,62 +1,76 @@
 package com.rdelacruz.couponserviceapi;
 
-import com.rdelacruz.couponserviceapi.Controller.CouponController;
 import com.rdelacruz.couponserviceapi.Domain.*;
-import com.rdelacruz.couponserviceapi.Services.CouponService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.mockito.*;
-import com.datastax.driver.core.utils.UUIDs;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.Assert;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rdelacruz.couponserviceapi.Controller.CouponController;
+import com.rdelacruz.couponserviceapi.Services.CouponService;
+import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.*;
+import org.mockito.Mock;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.data.cassandra.core.query.CassandraPageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(CouponController.class)
 @ContextConfiguration(classes = CassandraConfiguration.class,
         initializers = EmbeddedCassandraInitializer.class)
 @SpringBootTest
 public class CouponServiceApiApplicationTests {
     private Business _business;
+    private UUID _uuid;
     private List<Business> _businessList;
 
     private Coupon _coupon;
-    private List<Coupon> _couponList;
 
     @Autowired
-    private MockMvc mvc;
+    private BusinessRepository businessRepository;
 
-    @MockBean
-    private CouponController couponController;
+    @Autowired
+    private CouponByCityRepository couponByCityRepository;
 
-    @Mock
-    private CouponService couponService;
+    @Autowired
+    private CouponByRegionRepository couponByRegionRepository;
+
+    @Autowired
+    private CouponByStateRepository couponByStateRepository;
+
+    @Autowired
+    private CouponByCountryRepository couponByCountryRepository;
 
     @Before
-    private void setup(){
+    public void setup(){
         _business = new Business();
-        _business.setBusinessName("testCompany");
-        _business.setId(UUID.randomUUID());
         _businessList = new ArrayList<>();
+        _business.setBusinessName("testCompany");
+        _uuid = UUID.randomUUID();
+        _business.setId(_uuid);
         _businessList.add(_business);
 
         _coupon = new Coupon();
@@ -66,28 +80,109 @@ public class CouponServiceApiApplicationTests {
         _coupon.setRegionName("West Bay");
         _coupon.setStateName("California");
         _coupon.setCountryName("US");
-        _couponList.add(_coupon);
-
-    }
-
-    private void mockAllFieldsResponse() {
-        when(couponService.findAllBusinesses()).thenReturn(_businessList);
-        when(couponService.createCoupon(_coupon));
     }
 
     @Test
-    public void contextLoads() {
+    public void testOperations() {
+        // add business test
+        {
+            Business business = businessRepository.insert(_business);
+            Assert.assertEquals("testCompany", business.getName());
+            Assert.assertEquals(_uuid, business.getId());
+        }
+
+        // find coupons by city test1
+        {
+            List<CouponByCity> coupons = couponByCityRepository.findAllByCityName("San Jose");
+            Assert.assertEquals(2 , coupons.size());
+            Assert.assertEquals("Airbnb", coupons.get(0).getBusinessName());
+        }
+
+        // find coupons by city test2
+        {
+            List<CouponByCity> coupons = couponByCityRepository.findAllByCityName("Oakland");
+            Assert.assertEquals(1 , coupons.size());
+            Assert.assertEquals("Uber", coupons.get(0).getBusinessName());
+        }
+
+        // find coupons by city test3
+        {
+            List<CouponByCity> coupons = couponByCityRepository.findAllByCityName("Cupertino");
+            Assert.assertEquals(1 , coupons.size());
+            Assert.assertEquals("Apple", coupons.get(0).getBusinessName());
+        }
+
+        // find coupons by region test1
+        {
+            List<CouponByRegion> coupons = couponByRegionRepository.findAllByRegionName("West Bay");
+            Assert.assertEquals(2 , coupons.size());
+            Assert.assertEquals("Airbnb", coupons.get(1).getBusinessName());
+        }
+
+        // find coupons by region test2
+        {
+            List<CouponByRegion> coupons = couponByRegionRepository.findAllByRegionName("East Bay");
+            Assert.assertEquals(1 , coupons.size());
+            Assert.assertEquals("Uber", coupons.get(0).getBusinessName());
+        }
+
+        // find coupons by state test
+        {
+            List<CouponByState> coupons = couponByStateRepository.findAllByStateName("California");
+            Assert.assertEquals(3 , coupons.size());
+            Assert.assertEquals("Airbnb", coupons.get(2).getBusinessName());
+        }
+
+        // find coupons by country test
+        {
+            List<CouponByCountry> coupons = couponByCountryRepository.findAllByCountryName("US");
+            Assert.assertEquals(3 , coupons.size());
+            Assert.assertEquals("Airbnb", coupons.get(2).getBusinessName());
+        }
 
     }
 
-    //TODO: test for adding invalid business record (empty business_name or null business_name or null id)
-    //TODO: test for adding invalid coupon record
-    //TODO: test adding a coupon
-    //TODO: test finding coupons by city
-    //TODO: test finding coupons by region
-    //TODO: test finding coupons by state
-    //TODO: test fining coupons by country
 
+    //TODO: test coupon service for adding invalid business record (empty business_name or null business_name or null id)
+    //TODO: test coupon service for adding invalid coupon record (i.e coupon "" as cityName)
+    //TODO: test coupon service finding coupons by city
+    //TODO: We could also test the controllers by mocking the services response. Example below:
 
+//    @MockBean
+//    private CouponService couponService;
 
+//    private void mockAllFieldsResponse() {
+//        when(couponService.createBusiness(_business)).thenReturn(_business);
+//        when(couponService.findAllBusinesses()).thenReturn(_businessList);
+//        when(couponService.createCoupon(any())).thenReturn(_coupon);
+//    }
+
+//    @Test
+//    public void issueCouponTest() throws Exception {
+//        mockAllFieldsResponse();
+//        this.mvc.perform(post("/issueCoupon")
+//                .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                .content(asJsonString(_coupon)))
+//                .andExpect(status().isOk());
+//    }
+
+//    @Test
+//    public void createBusinessTest() throws Exception {
+//        mockAllFieldsResponse();
+//        this.mvc.perform(post("/addBusiness")
+//                .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                .content(asJsonString(_business)))
+//                .andExpect(status().isOk());
+//    }
+
+    /*
+     * converts a Java object into JSON representation
+     */
+//    public static String asJsonString(final Object obj) {
+//        try {
+//            return new ObjectMapper().writeValueAsString(obj);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }
