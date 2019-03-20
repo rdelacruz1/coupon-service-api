@@ -56,17 +56,21 @@ Endpoint path:  demo/issueCoupon.
 
 Parameters: String description, String businessName, String cityName, String regionName, String stateName, String countryName 
 
-Request example from terminal: curl --header "Content-Type: application/json"   --request POST   --data '{"description":"Uber discount","businessName":"Uber","cityName":"San Francisco","regionName":"West Bay","stateName":"California","countryName":"US"}'   http://localhost:8080/demo/issueCoupon  
+Request example from terminal: 
+
+```sh
+curl --header "Content-Type: application/json"   --request POST   --data '{"description":"Uber discount","businessName":"Uber","cityName":"San Francisco","regionName":"West Bay","stateName":"California","countryName":"US"}'   http://localhost:8080/demo/issueCoupon  
+```
 
  
 
 Using findCouponsByCity endpoint: 
 
-Endpoint path:  demo/ findCouponsByCity 
+Endpoint path:  `demo/ findCouponsByCity` 
 
 Parameter: String cityName, String page, String limit 
 
-Request example from browser: http://localhost:8080/demo/findCouponsByCity?cityName=San%20Jose 
+Request example from browser: `http://localhost:8080/demo/findCouponsByCity?cityName=San%20Jose`
 
 
 Using findCouponsByRegion endpoint: 
