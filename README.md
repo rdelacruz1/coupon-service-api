@@ -25,15 +25,15 @@ There are 6 main endpoints available for use. They are:
 
 `addBusiness()`
 
-issueCoupon() 
+`issueCoupon()`
 
-findCouponsByCity() 
+`findCouponsByCity()`
 
-findCouponsByRegion() 
+`findCouponsByRegion()`
 
-findCouponsByState() 
+`findCouponsByState()`
 
-findCouponsByCountry() 
+`findCouponsByCountry()`
 
 
 Using addBusiness endpoint:  
