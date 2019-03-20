@@ -4,6 +4,8 @@ import com.rdelacruz.couponserviceapi.Domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.data.cassandra.core.query.CassandraPageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -70,51 +72,66 @@ public class CouponServiceApiApplicationTests {
 
         // find coupons by city test1
         {
-            List<CouponByCity> coupons = couponByCityRepository.findAllByCityName("San Jose");
-            Assert.assertEquals(2 , coupons.size());
-            Assert.assertEquals("Airbnb", coupons.get(0).getBusinessName());
+            Slice<CouponByCity> coupons = couponByCityRepository.findAllByCityName("San Jose",
+                    CassandraPageRequest.of(0,10));
+            Assert.assertEquals(10, coupons.getSize());
+            List<CouponByCity> couponsContent = coupons.getContent();
+            Assert.assertEquals(2, couponsContent.size());
+            Assert.assertEquals("Airbnb", couponsContent.get(0).getBusinessName());
         }
 
         // find coupons by city test2
         {
-            List<CouponByCity> coupons = couponByCityRepository.findAllByCityName("Oakland");
-            Assert.assertEquals(1 , coupons.size());
-            Assert.assertEquals("Uber", coupons.get(0).getBusinessName());
+            Slice<CouponByCity> coupons = couponByCityRepository.findAllByCityName("Oakland",
+                    CassandraPageRequest.of(0,10));
+            List<CouponByCity> couponsContent = coupons.getContent();
+            Assert.assertEquals(1, couponsContent.size());
+            Assert.assertEquals("Uber", couponsContent.get(0).getBusinessName());
         }
 
         // find coupons by city test3
         {
-            List<CouponByCity> coupons = couponByCityRepository.findAllByCityName("Cupertino");
-            Assert.assertEquals(1 , coupons.size());
-            Assert.assertEquals("Apple", coupons.get(0).getBusinessName());
+            Slice<CouponByCity> coupons = couponByCityRepository.findAllByCityName("Cupertino",
+                    CassandraPageRequest.of(0,10));
+            List<CouponByCity> couponsContent = coupons.getContent();
+            Assert.assertEquals(1, couponsContent.size());
+            Assert.assertEquals("Apple", couponsContent.get(0).getBusinessName());
         }
 
         // find coupons by region test1
         {
-            List<CouponByRegion> coupons = couponByRegionRepository.findAllByRegionName("West Bay");
-            Assert.assertEquals(2 , coupons.size());
-            Assert.assertEquals("Airbnb", coupons.get(1).getBusinessName());
+            Slice<CouponByRegion> coupons = couponByRegionRepository.findAllByRegionName("West Bay",
+                    CassandraPageRequest.of(0,10));
+            List<CouponByRegion> couponsContent = coupons.getContent();
+            Assert.assertEquals(2, couponsContent.size());
+            Assert.assertEquals("Airbnb", couponsContent.get(1).getBusinessName());
         }
 
         // find coupons by region test2
         {
-            List<CouponByRegion> coupons = couponByRegionRepository.findAllByRegionName("East Bay");
-            Assert.assertEquals(1 , coupons.size());
-            Assert.assertEquals("Uber", coupons.get(0).getBusinessName());
+            Slice<CouponByRegion> coupons = couponByRegionRepository.findAllByRegionName("East Bay",
+                    CassandraPageRequest.of(0,10));
+            List<CouponByRegion> couponsContent = coupons.getContent();
+            Assert.assertEquals(1, couponsContent.size());
+            Assert.assertEquals("Uber", couponsContent.get(0).getBusinessName());
         }
 
         // find coupons by state test
         {
-            List<CouponByState> coupons = couponByStateRepository.findAllByStateName("California");
-            Assert.assertEquals(3 , coupons.size());
-            Assert.assertEquals("Airbnb", coupons.get(2).getBusinessName());
+            Slice<CouponByState> coupons = couponByStateRepository.findAllByStateName("California",
+                    CassandraPageRequest.of(0,10));
+            List<CouponByState> couponsContent = coupons.getContent();
+            Assert.assertEquals(3, couponsContent.size());
+            Assert.assertEquals("Airbnb", couponsContent.get(2).getBusinessName());
         }
 
         // find coupons by country test
         {
-            List<CouponByCountry> coupons = couponByCountryRepository.findAllByCountryName("US");
-            Assert.assertEquals(3 , coupons.size());
-            Assert.assertEquals("Airbnb", coupons.get(2).getBusinessName());
+            Slice<CouponByCountry> coupons = couponByCountryRepository.findAllByCountryName("US",
+                    CassandraPageRequest.of(0,10));
+            List<CouponByCountry> couponsContent = coupons.getContent();
+            Assert.assertEquals(3, couponsContent.size());
+            Assert.assertEquals("Airbnb", couponsContent.get(2).getBusinessName());
         }
 
     }

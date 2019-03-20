@@ -3,8 +3,8 @@ package com.rdelacruz.couponserviceapi.Services;
 import com.datastax.driver.core.utils.UUIDs;
 import com.rdelacruz.couponserviceapi.Domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.cassandra.core.query.CassandraPageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;
@@ -30,20 +30,20 @@ public class CouponService {
         this.couponByCountryRepository = couponByCountryRepository;
     }
 
-    public List<CouponByCity> findAllCouponsByCityName(String cityName) {
-        return couponByCityRepository.findAllByCityName(cityName);
+    public Slice<CouponByCity> findAllCouponsByCityName(String cityName, int pageIndex, int resultsOnPage) {
+        return couponByCityRepository.findAllByCityName(cityName, CassandraPageRequest.of(pageIndex, resultsOnPage));
     }
 
-    public List<CouponByState> findAllCouponsByStateName(String stateName) {
-        return couponByStateRepository.findAllByStateName(stateName);
+    public Slice<CouponByState> findAllCouponsByStateName(String stateName, int pageIndex, int resultsOnPage) {
+        return couponByStateRepository.findAllByStateName(stateName, CassandraPageRequest.of(pageIndex, resultsOnPage));
     }
 
-    public List<CouponByRegion> findAllCouponsByRegionName(String regionName) {
-        return couponByRegionRepository.findAllByRegionName(regionName);
+    public Slice<CouponByRegion> findAllCouponsByRegionName(String regionName, int pageIndex, int resultsOnPage) {
+        return couponByRegionRepository.findAllByRegionName(regionName, CassandraPageRequest.of(pageIndex, resultsOnPage));
     }
 
-    public List<CouponByCountry> findAllCouponsByCountryName(String countryName) {
-        return couponByCountryRepository.findAllByCountryName(countryName);
+    public Slice<CouponByCountry> findAllCouponsByCountryName(String countryName, int pageIndex, int resultsOnPage) {
+        return couponByCountryRepository.findAllByCountryName(countryName, CassandraPageRequest.of(pageIndex, resultsOnPage));
     }
 
     public List<Business> findAllBusinesses() {

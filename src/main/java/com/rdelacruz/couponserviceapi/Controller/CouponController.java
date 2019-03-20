@@ -43,7 +43,7 @@ public class CouponController {
     @GetMapping(path="/findCouponsByCity")
     public @ResponseBody ResponseEntity<Iterable<CouponByCity>> findCouponsByCity(@RequestParam String cityName) {
         try {
-            return ResponseEntity.ok(couponService.findAllCouponsByCityName(cityName));
+            return ResponseEntity.ok(couponService.findAllCouponsByCityName(cityName, 0, 10));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -52,7 +52,7 @@ public class CouponController {
     @GetMapping(path="/findCouponsByState")
     public @ResponseBody ResponseEntity<Iterable<CouponByState>> findCouponsByState(@RequestParam String stateName) {
         try {
-            return ResponseEntity.ok(couponService.findAllCouponsByStateName(stateName));
+            return ResponseEntity.ok(couponService.findAllCouponsByStateName(stateName, 0,10));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -61,7 +61,7 @@ public class CouponController {
     @GetMapping(path="/findCouponsByRegion")
     public @ResponseBody ResponseEntity<Iterable<CouponByRegion>> findCouponsByRegion(@RequestParam String regionName) {
         try {
-            return ResponseEntity.ok(couponService.findAllCouponsByRegionName(regionName));
+            return ResponseEntity.ok(couponService.findAllCouponsByRegionName(regionName, 0,10));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -70,7 +70,7 @@ public class CouponController {
     @GetMapping(path="/findCouponsByCountry")
     public @ResponseBody ResponseEntity<Iterable<CouponByCountry>> findCouponsByCountry(@RequestParam String countryName) {
         try {
-            return ResponseEntity.ok(couponService.findAllCouponsByCountryName(countryName));
+            return ResponseEntity.ok(couponService.findAllCouponsByCountryName(countryName, 0,10));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
