@@ -11,7 +11,6 @@ INSERT INTO coupon_service.business (id, name) VALUES (3c79e27e-6c3c-4e6c-b8ba-4
 INSERT INTO coupon_service.business (id, name) VALUES (3c79e27e-6c3c-4e6c-b8ba-401e6a5ee48b, 'Airbnb');
 
 INSERT INTO coupon_service.coupons_by_city (description, businessName, cityName) VALUES ('Airbnb 5% off coupon', 'Airbnb', 'San Jose');
-INSERT INTO coupon_service.coupons_by_city (description, businessName, cityName) VALUES ('Premium 5% off coupon', 'LinkedIn', 'San Jose');
 INSERT INTO coupon_service.coupons_by_region (description, businessName, cityName, regionName) VALUES ('Airbnb 5% off coupon', 'Airbnb', 'San Jose', 'West Bay');
 INSERT INTO coupon_service.coupons_by_state (description, businessName, cityName, regionName, stateName) VALUES ('Airbnb 5% off coupon', 'Airbnb', 'San Jose', 'West Bay', 'California');
 INSERT INTO coupon_service.coupons_by_country (description, businessName, cityName, regionName, stateName, countryName) VALUES ('Airbnb 5% off coupon', 'Airbnb', 'San Jose', 'West Bay', 'California', 'US');

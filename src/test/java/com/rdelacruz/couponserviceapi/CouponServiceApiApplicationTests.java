@@ -76,7 +76,7 @@ public class CouponServiceApiApplicationTests {
                     CassandraPageRequest.of(0,10));
             Assert.assertEquals(10, coupons.getSize());
             List<CouponByCity> couponsContent = coupons.getContent();
-            Assert.assertEquals(2, couponsContent.size());
+            Assert.assertEquals(1, couponsContent.size());
             Assert.assertEquals("Airbnb", couponsContent.get(0).getBusinessName());
         }
 

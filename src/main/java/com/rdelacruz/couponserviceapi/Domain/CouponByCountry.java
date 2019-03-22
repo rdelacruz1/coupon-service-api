@@ -2,7 +2,6 @@ package com.rdelacruz.couponserviceapi.Domain;
 
 import org.springframework.data.cassandra.core.cql.Ordering;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -17,19 +16,24 @@ public class CouponByCountry {
             ordering = Ordering.DESCENDING)
     private String countryName;
 
-    @Column
+    @PrimaryKeyColumn(name = "description", ordinal = 0, type = PrimaryKeyType.CLUSTERED,
+                     ordering = Ordering.DESCENDING)
     private String description;
 
-    @Column
+    @PrimaryKeyColumn(name = "businessName", ordinal = 0, type = PrimaryKeyType.CLUSTERED,
+                     ordering = Ordering.DESCENDING)
     private String businessName;
 
-    @Column
+    @PrimaryKeyColumn(name = "cityName", ordinal = 0, type = PrimaryKeyType.CLUSTERED,
+            ordering = Ordering.DESCENDING)
     private String cityName;
 
-    @Column
+    @PrimaryKeyColumn(name = "regionName", ordinal = 0, type = PrimaryKeyType.CLUSTERED,
+            ordering = Ordering.DESCENDING)
     private String regionName;
 
-    @Column
+    @PrimaryKeyColumn(name = "stateName", ordinal = 0, type = PrimaryKeyType.CLUSTERED,
+            ordering = Ordering.DESCENDING)
     private String stateName;
 
     public void setCountryName(String countryName) {
